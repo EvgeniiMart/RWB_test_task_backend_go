@@ -35,7 +35,7 @@ func main() {
 
 	// Launch all three subservices
 	go looper.LoopEverySecond(&eventQueueWrap, &queriesSortedWrap,
-		&queriesMapWrap)
+		&queriesMapWrap, cfg)
 
 	go consumer.BrokerHandle(&eventQueueWrap, &queriesMapWrap, cfg)
 
