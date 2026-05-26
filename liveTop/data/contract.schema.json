@@ -1,0 +1,20 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string"
+      },
+      "delta": {
+        "type": "integer"
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "required": ["query"],
+    "additionalProperties": false
+  }
+}
