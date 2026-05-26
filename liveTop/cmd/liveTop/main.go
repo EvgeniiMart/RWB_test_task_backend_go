@@ -1,8 +1,10 @@
-package livetop
+package main
 
 import (
+	"container/list"
 	"log"
 	"net/http"
+	"sync"
 
 	"github.com/EvgeniiMart/RWB_test_task_backend_go/internal/consumer"
 	"github.com/EvgeniiMart/RWB_test_task_backend_go/internal/handler"
@@ -11,9 +13,18 @@ import (
 )
 
 func main() {
-	var eventQueueWrap joint.EventQueueWrapped
-	var queriesMapWrap joint.QueriesMapWrapped
-	var queriesSortedWrap joint.QueriesSortedWrapped
+	var eventQueueWrap joint.EventQueueWrapped = joint.EventQueueWrapped{
+		Data: list.New(),
+		Mu:   sync.RWMutex{},
+	}
+	var queriesMapWrap joint.QueriesMapWrapped = joint.QueriesMapWrapped{
+		Data: make(map[string]int),
+		Mu:   sync.RWMutex{},
+	}
+	var queriesSortedWrap joint.QueriesSortedWrapped = joint.QueriesSortedWrapped{
+		Data: make([]joint.QueryInfo, 0),
+		Mu:   sync.RWMutex{},
+	}
 	limit := 100
 
 	go looper.LoopEverySecond(&eventQueueWrap, &queriesSortedWrap,
