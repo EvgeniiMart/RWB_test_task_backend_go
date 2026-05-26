@@ -1,0 +1,28 @@
+services:
+  nats:
+    image: nats:latest
+    ports:
+      - "4222:4222"
+    networks:
+      - nats-network
+
+  live_top:
+    build: ./liveTop
+    depends_on:
+      - nats
+    networks:
+      - nats-network
+    restart: unless-stopped
+
+  broker:
+    build: ./broker
+    depends_on:
+      - live_top
+      - nats
+    networks:
+      - nats-network
+    restart: unless-stopped
+
+networks:
+  nats-network:
+    driver: bridge
