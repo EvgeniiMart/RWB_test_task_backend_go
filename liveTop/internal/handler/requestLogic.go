@@ -1,18 +1,23 @@
 package handler
 
-import "github.com/EvgeniiMart/RWB_test_task_backend_go/internal/joint"
+import (
+	"log"
 
-func getTop(k int, queriesSorted []joint.QueryInfo) []joint.QueryInfo {
-	if k > len(queriesSorted) {
+	"github.com/EvgeniiMart/RWB_test_task_backend_go/internal/joint"
+)
+
+func getTop(n int, queriesSorted []joint.QueryInfo) []joint.QueryInfo {
+	if n > len(queriesSorted) {
 		return queriesSorted
 	}
-	return queriesSorted[:k]
+	return queriesSorted[:n]
 }
 
-func assembleAnswer(k int, queriesSortedWrap *joint.QueriesSortedWrapped) []string {
-	queriesSorted := queriesSortedWrap.Data
+func assembleAnswer(n int, queriesSortedWrap *joint.QueriesSortedWrapped) []string {
+	log.Printf("Len: %d", len(queriesSortedWrap.Data))
+
 	queriesSortedWrap.Mu.RLock()
-	topK := getTop(k, queriesSorted)
+	topK := getTop(n, queriesSortedWrap.Data)
 	queriesSortedWrap.Mu.RUnlock()
 
 	result := make([]string, len(topK))

@@ -47,7 +47,7 @@ func RequestHandler(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	res := assembleAnswer(n, queriesSorted)
+	res := assembleAnswer(n, queriesSortedWrap)
 
 	resData, err := json.Marshal(res)
 	if err != nil {
