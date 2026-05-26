@@ -14,7 +14,7 @@
         "format": "date-time"
       }
     },
-    "required": ["query"],
+    "required": ["query", "delta"],
     "additionalProperties": false
   }
 }
