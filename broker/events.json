@@ -1,0 +1,20 @@
+[
+  {
+    "query": "apple",
+    "delta": 10,
+    "start": 5,
+    "repeat": -1
+  },
+  {
+    "query": "banana",
+    "delta": 5,
+    "start": 10,
+    "repeat": 10
+  },
+  {
+    "query": "melon",
+    "delta": 100,
+    "start": 30,
+    "repeat": -1
+  }
+]
