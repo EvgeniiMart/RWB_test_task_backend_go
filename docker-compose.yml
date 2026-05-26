@@ -15,7 +15,7 @@ services:
       - NATS_URL=nats://nats:4222
       - EXPIRATION_SECONDS=300
       - LOOP_INTERVAL_SECONDS=1
-      - VERBOSE=FALSE
+      - VERBOSE=TRUE
     networks:
       - nats-network
     restart: unless-stopped
