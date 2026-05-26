@@ -10,12 +10,12 @@ import (
 )
 
 func TestStoreEvents(t *testing.T) {
-	eventQueue := &joint.EventQueueWrapped{
+	eventQueueWrap := &joint.EventQueueWrapped{
 		Data: list.New(),
 		Mu:   sync.RWMutex{},
 	}
 
-	queriesMap := &joint.QueriesMapWrapped{
+	queriesMapWrap := &joint.QueriesMapWrapped{
 		Data: map[string]int{},
 		Mu:   sync.RWMutex{},
 	}
@@ -35,12 +35,12 @@ func TestStoreEvents(t *testing.T) {
 		},
 	}
 
-	storeEvents(eventQueue, queriesMap, events)
+	storeEvents(eventQueueWrap, queriesMapWrap, events)
 
-	require.Equal(t, 8, queriesMap.Data["apple"])
-	require.Equal(t, -2, queriesMap.Data["banana"])
+	require.Equal(t, 8, queriesMapWrap.Data["apple"])
+	require.Equal(t, -2, queriesMapWrap.Data["banana"])
 
-	require.Equal(t, 3, eventQueue.Data.Len())
+	require.Equal(t, 3, eventQueueWrap.Data.Len())
 }
 
 func TestJSONValid(t *testing.T) {
