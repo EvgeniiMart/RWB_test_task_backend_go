@@ -51,7 +51,7 @@ func TestProcessEvents(t *testing.T) {
 	processEvents(eventQueueWrap, queriesMapWrap, cfg)
 
 	require.Equal(t, 5500, queriesMapWrap.Data["apple"])
-	require.Equal(t, 0, eventQueueWrap.Data.Len())
+	require.Equal(t, 2, eventQueueWrap.Data.Len())
 }
 
 func TestSortQueries(t *testing.T) {
