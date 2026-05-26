@@ -1,0 +1,26 @@
+[
+  {
+    "query": "apple",
+    "delta": 10,
+    "start": 5,
+    "repeat": -1
+  },
+  {
+    "query": "strawberry",
+    "delta": 1000,
+    "start": 5,
+    "repeat": -1
+  },
+  {
+    "query": "banana",
+    "delta": 6,
+    "start": 10,
+    "repeat": 10
+  },
+  {
+    "query": "melon",
+    "delta": 20,
+    "start": 30,
+    "repeat": -1
+  }
+]
