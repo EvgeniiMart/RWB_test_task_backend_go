@@ -35,7 +35,7 @@ func TestStoreEvents(t *testing.T) {
 		},
 	}
 
-	storeEvents(eventQueueWrap, queriesMapWrap, events)
+	storeEvents(eventQueueWrap, queriesMapWrap, events, &joint.Config{})
 
 	require.Equal(t, 8, queriesMapWrap.Data["apple"])
 	require.Equal(t, -2, queriesMapWrap.Data["banana"])

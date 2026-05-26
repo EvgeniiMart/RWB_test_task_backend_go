@@ -12,6 +12,7 @@ type Config struct {
 	NATSurl             string
 	ExpirationSeconds   int
 	LoopIntervalSeconds int
+	Verbose             bool
 }
 
 func getDefaultConfig() *Config {
@@ -20,6 +21,7 @@ func getDefaultConfig() *Config {
 		NATSurl:             "nats://nats:4222",
 		ExpirationSeconds:   300,
 		LoopIntervalSeconds: 1,
+		Verbose:             false,
 	}
 }
 
@@ -42,6 +44,11 @@ func LoadConfigFromEnv() (*Config, error) {
 	}
 
 	err = setIntFromEnv("LOOP_INTERVAL_SECONDS", &cfg.LoopIntervalSeconds)
+	if err != nil {
+		return &Config{}, err
+	}
+
+	err = setBoolFromEnv("VERBOSE", &cfg.Verbose)
 	if err != nil {
 		return &Config{}, err
 	}
@@ -77,6 +84,21 @@ func setIntFromEnv(key string, field *int) error {
 
 	if parsed <= 0 {
 		return fmt.Errorf("invalid env var %s: must be positive", key)
+	}
+
+	*field = parsed
+	return nil
+}
+
+func setBoolFromEnv(key string, field *bool) error {
+	value := strings.TrimSpace(os.Getenv(key))
+	if value == "" {
+		return nil
+	}
+
+	parsed, err := strconv.ParseBool(value)
+	if err != nil {
+		return fmt.Errorf("invalid env var %s: %w", key, err)
 	}
 
 	*field = parsed

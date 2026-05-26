@@ -67,7 +67,7 @@ func TestSortQueries(t *testing.T) {
 
 	queriesSortedWrap := &joint.QueriesSortedWrapped{}
 
-	sortQueries(queriesSortedWrap, queriesMapWrap)
+	sortQueries(queriesSortedWrap, queriesMapWrap, &joint.Config{})
 
 	require.Equal(t, 5, len(queriesSortedWrap.Data))
 	require.Equal(t, "strawberry", queriesSortedWrap.Data[0].Query)

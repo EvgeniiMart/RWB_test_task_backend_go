@@ -10,7 +10,7 @@ import (
 
 // All broker handling logic (separated from network code)
 func processBrokerMessage(msg *nats.Msg, eventQueueWrap *joint.EventQueueWrapped,
-	queriesMapWrap *joint.QueriesMapWrapped) {
+	queriesMapWrap *joint.QueriesMapWrapped, cfg *joint.Config) {
 	var raw interface{}
 
 	err := json.Unmarshal(msg.Data, &raw)
@@ -33,7 +33,7 @@ func processBrokerMessage(msg *nats.Msg, eventQueueWrap *joint.EventQueueWrapped
 		return
 	}
 
-	storeEvents(eventQueueWrap, queriesMapWrap, events)
+	storeEvents(eventQueueWrap, queriesMapWrap, events, cfg)
 }
 
 // NATS subscription for broker (separated from message processing logic)
@@ -46,7 +46,7 @@ func BrokerHandle(eventQueueWrap *joint.EventQueueWrapped,
 	defer nc.Close()
 
 	_, err = nc.Subscribe("events", func(msg *nats.Msg) {
-		processBrokerMessage(msg, eventQueueWrap, queriesMapWrap)
+		processBrokerMessage(msg, eventQueueWrap, queriesMapWrap, cfg)
 	})
 	if err != nil {
 		log.Fatal(err)
