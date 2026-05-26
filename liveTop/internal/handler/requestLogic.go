@@ -1,11 +1,10 @@
 package handler
 
 import (
-	"log"
-
 	"github.com/EvgeniiMart/RWB_test_task_backend_go/internal/joint"
 )
 
+// Take slice
 func getTop(n int, queriesSorted []joint.QueryInfo) []joint.QueryInfo {
 	if n > len(queriesSorted) {
 		return queriesSorted
@@ -13,9 +12,8 @@ func getTop(n int, queriesSorted []joint.QueryInfo) []joint.QueryInfo {
 	return queriesSorted[:n]
 }
 
+// Convert QueryInfo array into string array
 func assembleAnswer(n int, queriesSortedWrap *joint.QueriesSortedWrapped) []string {
-	log.Printf("Len: %d", len(queriesSortedWrap.Data))
-
 	queriesSortedWrap.Mu.RLock()
 	topK := getTop(n, queriesSortedWrap.Data)
 	queriesSortedWrap.Mu.RUnlock()

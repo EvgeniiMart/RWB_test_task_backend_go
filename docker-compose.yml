@@ -10,6 +10,11 @@ services:
     build: ./liveTop
     depends_on:
       - nats
+    environment:
+      - REQUEST_LIMIT=100
+      - NATS_URL=nats://nats:4222
+      - EXPIRATION_SECONDS=300
+      - LOOP_INTERVAL_SECONDS=1
     networks:
       - nats-network
     restart: unless-stopped
