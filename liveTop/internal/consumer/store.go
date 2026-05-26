@@ -1,12 +1,14 @@
 package consumer
 
 import (
-	"log"
 	"time"
 
 	"github.com/EvgeniiMart/RWB_test_task_backend_go/internal/joint"
 )
 
+// Logic of work with shared data storages:
+// 1. delta is taken into account for queriesMap
+// 2. whole event is added to eventQueue for future deletion (after 5 minutes)
 func storeEvents(eventQueueWrap *joint.EventQueueWrapped,
 	queriesMapWrap *joint.QueriesMapWrapped, events []joint.Event) {
 	eventQueueWrap.Mu.Lock()
@@ -18,9 +20,6 @@ func storeEvents(eventQueueWrap *joint.EventQueueWrapped,
 		if event.Timestamp.IsZero() {
 			event.Timestamp = time.Now()
 		}
-
-		log.Printf("Received event: query=%s, delta=%d, timestamp=%s\n",
-			event.Query, event.Delta, event.Timestamp.Format(time.RFC3339))
 
 		queriesMapWrap.Data[event.Query] += event.Delta
 

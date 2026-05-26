@@ -9,6 +9,7 @@ import (
 	"github.com/EvgeniiMart/RWB_test_task_backend_go/internal/joint"
 )
 
+// Extract and validate N from request URI
 func extractN(requestURI string, limit int) (int, string) {
 	u, err := url.Parse(requestURI)
 	if err != nil {
@@ -34,14 +35,15 @@ func extractN(requestURI string, limit int) (int, string) {
 	return n, ""
 }
 
+// Main HTTP handler for incoming topN requests
 func RequestHandler(w http.ResponseWriter, r *http.Request,
-	queriesSortedWrap *joint.QueriesSortedWrapped, limit int) {
+	queriesSortedWrap *joint.QueriesSortedWrapped, cfg *joint.Config) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	n, errStr := extractN(r.RequestURI, limit)
+	n, errStr := extractN(r.RequestURI, cfg.RequestLimit)
 	if errStr != "" {
 		http.Error(w, errStr, http.StatusBadRequest)
 		return

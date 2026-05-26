@@ -13,28 +13,35 @@ import (
 )
 
 func main() {
-	var eventQueueWrap joint.EventQueueWrapped = joint.EventQueueWrapped{
+	// Load config
+	var cfg, err = joint.LoadConfigFromEnv()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Init shared data storages
+	var eventQueueWrap = joint.EventQueueWrapped{
 		Data: list.New(),
 		Mu:   sync.RWMutex{},
 	}
-	var queriesMapWrap joint.QueriesMapWrapped = joint.QueriesMapWrapped{
+	var queriesMapWrap = joint.QueriesMapWrapped{
 		Data: make(map[string]int),
 		Mu:   sync.RWMutex{},
 	}
-	var queriesSortedWrap joint.QueriesSortedWrapped = joint.QueriesSortedWrapped{
+	var queriesSortedWrap = joint.QueriesSortedWrapped{
 		Data: make([]joint.QueryInfo, 0),
 		Mu:   sync.RWMutex{},
 	}
-	limit := 100
 
+	// Launch all three subservices
 	go looper.LoopEverySecond(&eventQueueWrap, &queriesSortedWrap,
 		&queriesMapWrap)
 
-	go consumer.BrokerHandle(&eventQueueWrap, &queriesMapWrap)
+	go consumer.BrokerHandle(&eventQueueWrap, &queriesMapWrap, cfg)
 
-	err := http.ListenAndServe(":8080", http.HandlerFunc(
+	err = http.ListenAndServe(":8080", http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
-			handler.RequestHandler(w, r, &queriesSortedWrap, limit)
+			handler.RequestHandler(w, r, &queriesSortedWrap, cfg)
 		},
 	))
 	if err != nil {
