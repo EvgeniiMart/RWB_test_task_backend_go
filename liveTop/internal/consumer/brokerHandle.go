@@ -10,7 +10,7 @@ import (
 
 func BrokerHandle(eventQueueWrap *joint.EventQueueWrapped,
 	queriesMapWrap *joint.QueriesMapWrapped) {
-	nc, err := nats.Connect(nats.DefaultURL)
+	nc, err := nats.Connect("nats://nats:4222")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -25,7 +25,7 @@ func BrokerHandle(eventQueueWrap *joint.EventQueueWrapped,
 			return
 		}
 
-		err = validateJSON("event_schema.json", raw)
+		err = validateJSON("data/contract.schema.json", raw)
 		if err != nil {
 			log.Println("Schema validation failed:", err)
 			return
